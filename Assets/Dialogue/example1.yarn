@@ -3,7 +3,6 @@ position: -257,-354
 ---
 <<playSound Alice>>
 讲述者:这是第一个Project的第一个句子
-<<test>>
 讲述者:我用它来进行测试
     ->你在干什么
         <<jump example2>>

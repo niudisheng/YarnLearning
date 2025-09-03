@@ -1,37 +1,43 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Yarn.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// ADV 系统的核心管理器，处理立绘显示、移动、差分切换等功能
 /// </summary>
 public class ADVManager : MonoBehaviour
 {
+    public DialogueRunner dialogueRunner; // 对话系统
     [Header("立绘系统设置")] public Transform characterContainer; // 立绘的父容器
     public Canvas mainCanvas; // 主画布
-
+    public AudioSource typewriterSound; // 打字机声音
     [Header("角色数据")] public CharacterData[] characters;
     public GameObject characterPrefab; // 立绘预制体
     [Header("演出设置")] public float defaultMoveSpeed = 1f;
     public float defaultFadeSpeed = 0.5f;
     public Ease defaultEaseType = Ease.OutQuad;
 
-    [Header("文字显示设置")] public Text dialogueText; // 对话文本组件
-    public float typewriterSpeed = 0.05f; // 打字机效果速度
-    public AudioSource typewriterSound; // 打字音效
+    [Header("文字显示设置")] public TextMeshProUGUI dialogueText; // 对话文本组件
 
     // 私有变量
     private Dictionary<string, GameObject> activeCharacters = new Dictionary<string, GameObject>();
     private Dictionary<string, CharacterData> characterDatabase = new Dictionary<string, CharacterData>();
     private Coroutine currentTypewriter;
 
+    private void Awake()
+    {
+        RegisterYarnCommands();
+    }
+
     void Start()
     {
         InitializeCharacterDatabase();
-        RegisterYarnCommands();
     }
 
     void InitializeCharacterDatabase()
@@ -46,6 +52,24 @@ public class ADVManager : MonoBehaviour
     {
         // 注册 Yarn 命令
         // 注意：这些方法需要是静态的，或者使用手动注册方式
+        dialogueRunner = FindAnyObjectByType<DialogueRunner>();
+
+        // 监听Yarn的文本显示事件
+        if (dialogueRunner != null)
+        {
+            // 假设你使用的是Yarn Spinner，监听文本更新事件
+            // 这里需要根据你使用的Yarn版本调整事件名称
+            if (dialogueRunner.onDialogueStart == null || dialogueRunner.onDialogueComplete == null)
+            {
+                Debug.LogWarning("请检查Yarn版本，可能需要调整事件名称");
+            }
+            else
+            {
+                Debug.Log("已注册Yarn文本显示事件");
+                // dialogueRunner.onDialogueStart.AddListener(OnDialogueStart);
+                // dialogueRunner.onDialogueComplete.AddListener(OnDialogueComplete);
+            }
+        }
     }
 
     #region 立绘显示和管理
@@ -292,7 +316,8 @@ public class ADVManager : MonoBehaviour
 
     #endregion
 
-    #region 文字显示效果
+
+    #region 打字机效果
 
     [YarnCommand("typewriter")]
     public static void StartTypewriter(string text, float speed = 0.05f)
@@ -356,6 +381,61 @@ public class ADVManager : MonoBehaviour
         }
     }
 
+
+    [YarnCommand("pause_dialogue")]
+    public static void PauseDialogue(float duration)
+    {
+        ADVManager advManager = FindAnyObjectByType<ADVManager>();
+        if (advManager != null)
+        {
+            advManager.StartCoroutine(advManager.PauseDialogueCoroutine(duration));
+        }
+    }
+
+    public IEnumerator PauseDialogueCoroutine(float duration)
+    {
+        // 暂停Yarn对话系统
+        if (dialogueRunner != null && dialogueRunner.IsDialogueRunning)
+        {
+            dialogueRunner.Stop();
+
+            yield return new WaitForSeconds(duration);
+
+            // 可以在这里添加恢复对话的逻辑
+            // 这取决于你的具体需求和Yarn版本
+        }
+    }
+
+    [YarnCommand("wait_for_input")]
+    public static void WaitForInput()
+    {
+        ADVManager advManager = FindAnyObjectByType<ADVManager>();
+        if (advManager != null)
+        {
+            advManager.StartCoroutine(advManager.WaitForInputCoroutine());
+        }
+    }
+
+    public IEnumerator WaitForInputCoroutine()
+    {
+        // 暂停Yarn对话
+        if (dialogueRunner != null)
+        {
+            // 设置等待输入状态
+            bool waitingForInput = true;
+
+            while (waitingForInput)
+            {
+                if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+                {
+                    waitingForInput = false;
+                }
+
+                yield return null;
+            }
+        }
+    }
+
     #endregion
 
     #region 辅助方法
@@ -377,6 +457,7 @@ public class ADVManager : MonoBehaviour
                 {
                     return positions[index].anchoredPosition;
                 }
+
                 Debug.LogWarning($"找不到位置: {position}");
                 return Vector2.zero;
         }

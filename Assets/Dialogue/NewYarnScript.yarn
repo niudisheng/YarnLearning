@@ -1,4 +1,12 @@
 ﻿title: NewYarnScript
 ---
-This is an example of a Yarn Spinner script. Write your dialogue here!
+<<enable_typewriter_audio>>
+角色A: 你好，欢迎来到这个世界！
+<<pause_dialogue 2.0>>
+角色B: 很高兴见到你。
+<<disable_typewriter_audio>>
+角色A: 这段文字不会有打字音效。
+<<enable_typewriter_audio>>
+角色A: 现在又有音效了！
+<<wait_for_input>>
 ===
