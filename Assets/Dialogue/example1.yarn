@@ -1,0 +1,23 @@
+﻿title: example1
+position: -257,-354
+---
+<<playSound Alice>>
+讲述者:这是第一个Project的第一个句子
+<<test>>
+讲述者:我用它来进行测试
+    ->你在干什么
+        <<jump example2>>
+    ->你在做什么
+        <<jump Node>>
+===
+title: example2
+position: -160,-4
+---
+回答者:我在测试跳转的功能
+回答者:我用它来进行测试
+===
+title: Node
+position: 14,-382
+---
+回答者：我也不知道
+===

@@ -1,0 +1,8 @@
+﻿title: Alice
+position: -14,-38
+---
+推开门，我听到了一个熟悉又陌生的声音。
+<<show_character Alice 0 0 1.5>>
+    ->贵安
+        <<jump example1>>
+===
