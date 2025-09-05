@@ -364,6 +364,7 @@ public class ADVManager : MonoBehaviour
 
     static IEnumerator PauseCoroutine(float duration)
     {
+        
         yield return new WaitForSeconds(duration);
     }
 
