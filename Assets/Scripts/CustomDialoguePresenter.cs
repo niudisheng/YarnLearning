@@ -1,75 +1,33 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using Yarn.Unity;
 
-public class DialoguePresenter : DialoguePresenterBase
+public class CustomDialoguePresenter : DialoguePresenterBase
 {
-    public Text dialogueText;
+    [SerializeField] private TMP_Text dialogueText;
+    [SerializeField] private GameObject dialoguePanel;
 
-    public override YarnTask RunLineAsync(LocalizedLine line, LineCancellationToken token)
-    {
-        // 用 YarnTask 封装一个协程
-        // 创建 YarnTaskCompletionSource 实例
-        var completionSource = new YarnTaskCompletionSource();
-
-        // 启动您的异步任务（例如协程、异步方法等）
-
-        StartCoroutine(ShowLine(line, token));
-        return completionSource.Task;
+    public override async YarnTask OnDialogueStartedAsync() {
+        dialoguePanel.SetActive(true);
+        await YarnTask.CompletedTask;
     }
 
-    private IEnumerator ShowLine(LocalizedLine line, LineCancellationToken token)
-    {
-        dialogueText.text = "";
+    public override async YarnTask OnDialogueCompleteAsync() {
+        dialoguePanel.SetActive(false);
+        await YarnTask.CompletedTask;
+    }
 
-        string text = line.TextWithoutCharacterName.Text;
-
-        foreach (char c in text)
-        {
-            if (token.IsHurryUpRequested)
-            {
-                dialogueText.text = text; // 跳过动画，直接显示
-                yield break;
-            }
-
-            dialogueText.text += c;
-            yield return new WaitForSeconds(0.05f); // 打字机延迟
-        }
-
-        // 等待玩家点击继续
-        bool clicked = false;
-        while (!clicked && !token.IsHurryUpRequested)
-        {
-            if (Input.GetMouseButtonDown(0))
-                clicked = true;
-
-            yield return null;
-        }
+    public override async YarnTask RunLineAsync(LocalizedLine line, LineCancellationToken token) {
+        dialogueText.text = line.TextWithoutCharacterName.Text;
+        await Task.Delay(2000); // 2 秒后自动下一句
     }
 
 
-    public override YarnTask<DialogueOption> RunOptionsAsync(DialogueOption[] dialogueOptions,
-        CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override YarnTask OnDialogueStartedAsync()
-    {
-        var completionSource = new YarnTaskCompletionSource();
-        
-        Debug.Log("Dialogue started");
-        return completionSource.Task;
-    }
-
-    public override YarnTask OnDialogueCompleteAsync()
-    {
-        throw new NotImplementedException();
+    public override async YarnTask<DialogueOption?> RunOptionsAsync(DialogueOption[] dialogueOptions, CancellationToken cancellationToken) {
+        // 最简单：直接返回第一个选项
+        Debug.Log("Options: " + dialogueOptions.Length);
+        return dialogueOptions.Length > 0 ? dialogueOptions[0] : null;
     }
 }
