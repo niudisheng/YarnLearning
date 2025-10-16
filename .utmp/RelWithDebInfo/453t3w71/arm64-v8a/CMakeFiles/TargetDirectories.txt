@@ -1,0 +1,8 @@
+E:/git/game/YarnLearning/.utmp/RelWithDebInfo/453t3w71/arm64-v8a/CMakeFiles/edit_cache.dir
+E:/git/game/YarnLearning/.utmp/RelWithDebInfo/453t3w71/arm64-v8a/CMakeFiles/rebuild_cache.dir
+E:/git/game/YarnLearning/.utmp/RelWithDebInfo/453t3w71/arm64-v8a/GameActivity/CMakeFiles/game.dir
+E:/git/game/YarnLearning/.utmp/RelWithDebInfo/453t3w71/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+E:/git/game/YarnLearning/.utmp/RelWithDebInfo/453t3w71/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
+E:/git/game/YarnLearning/.utmp/RelWithDebInfo/453t3w71/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+E:/git/game/YarnLearning/.utmp/RelWithDebInfo/453t3w71/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+E:/git/game/YarnLearning/.utmp/RelWithDebInfo/453t3w71/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

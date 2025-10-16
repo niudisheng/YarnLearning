@@ -25,6 +25,8 @@ public class CustomDialoguePresenter : DialoguePresenterBase
     [SerializeField] private AudioClip typingClip; 
     [SerializeField] [Range(0f, 1f)] private float typingVolume = 0.5f;
     [SerializeField] private float typingSoundInterval = 0.05f; // 每隔多少秒播放一次音效
+    
+
     private float typewriterSpeed {
         get { return 1.0f / lettersPerSecond; }
     }

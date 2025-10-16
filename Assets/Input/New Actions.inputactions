@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "New Actions",
+    "maps": [
+        {
+            "name": "phone",
+            "id": "35ac6069-c7cd-4825-a038-7101334b8478",
+            "actions": [
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "ee3e2915-05d8-42f5-9fe3-cda4c6fd7d18",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "28b8609d-fc5c-4688-bd06-f2c5617246b4",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
