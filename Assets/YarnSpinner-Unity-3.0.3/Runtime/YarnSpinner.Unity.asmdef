@@ -8,7 +8,9 @@
         "Unity.InputSystem",
         "Unity.Localization",
         "UniTask",
-        "UniTask.Addressables"
+        "UniTask.Addressables",
+        "UnityEditor.UI",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

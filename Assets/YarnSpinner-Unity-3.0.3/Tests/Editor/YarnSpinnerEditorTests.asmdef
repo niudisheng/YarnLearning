@@ -10,7 +10,9 @@
         "Unity.Localization",
         "Unity.Localization.Editor",
         "Unity.Localization.Settings",
-        "UniTask"
+        "UniTask",
+        "UnityEditor.UI",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [
         "Editor"

@@ -8,7 +8,9 @@
         "Unity.TextMeshPro",
         "YarnSpinner.Unity.Editor",
         "YarnSpinnerTests.Shared",
-        "UniTask"
+        "UniTask",
+        "UnityEditor.UI",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

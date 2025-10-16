@@ -89,7 +89,7 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
     ""name"": ""New Actions"",
     ""maps"": [
         {
-            ""name"": ""phone"",
+            ""name"": ""Main"",
             ""id"": ""35ac6069-c7cd-4825-a038-7101334b8478"",
             ""actions"": [
                 {
@@ -100,17 +100,48 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Tap"",
+                    ""type"": ""Button"",
+                    ""id"": ""121d11d5-30c4-451e-a08a-ad75020c3538"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""28b8609d-fc5c-4688-bd06-f2c5617246b4"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""542db8e9-7ceb-4f77-b4dc-7a4c575b3b6b"",
+                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c53624a9-03c9-48f2-8dea-22d00901e734"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -119,14 +150,15 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // phone
-        m_phone = asset.FindActionMap("phone", throwIfNotFound: true);
-        m_phone_Back = m_phone.FindAction("Back", throwIfNotFound: true);
+        // Main
+        m_Main = asset.FindActionMap("Main", throwIfNotFound: true);
+        m_Main_Back = m_Main.FindAction("Back", throwIfNotFound: true);
+        m_Main_Tap = m_Main.FindAction("Tap", throwIfNotFound: true);
     }
 
     ~@NewActions()
     {
-        UnityEngine.Debug.Assert(!m_phone.enabled, "This will cause a leak and performance issues, NewActions.phone.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Main.enabled, "This will cause a leak and performance issues, NewActions.Main.Disable() has not been called.");
     }
 
     /// <summary>
@@ -199,29 +231,34 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // phone
-    private readonly InputActionMap m_phone;
-    private List<IPhoneActions> m_PhoneActionsCallbackInterfaces = new List<IPhoneActions>();
-    private readonly InputAction m_phone_Back;
+    // Main
+    private readonly InputActionMap m_Main;
+    private List<IMainActions> m_MainActionsCallbackInterfaces = new List<IMainActions>();
+    private readonly InputAction m_Main_Back;
+    private readonly InputAction m_Main_Tap;
     /// <summary>
-    /// Provides access to input actions defined in input action map "phone".
+    /// Provides access to input actions defined in input action map "Main".
     /// </summary>
-    public struct PhoneActions
+    public struct MainActions
     {
         private @NewActions m_Wrapper;
 
         /// <summary>
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
-        public PhoneActions(@NewActions wrapper) { m_Wrapper = wrapper; }
+        public MainActions(@NewActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "phone/Back".
+        /// Provides access to the underlying input action "Main/Back".
         /// </summary>
-        public InputAction @Back => m_Wrapper.m_phone_Back;
+        public InputAction @Back => m_Wrapper.m_Main_Back;
+        /// <summary>
+        /// Provides access to the underlying input action "Main/Tap".
+        /// </summary>
+        public InputAction @Tap => m_Wrapper.m_Main_Tap;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
-        public InputActionMap Get() { return m_Wrapper.m_phone; }
+        public InputActionMap Get() { return m_Wrapper.m_Main; }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
         public void Enable() { Get().Enable(); }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
@@ -229,9 +266,9 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
         public bool enabled => Get().enabled;
         /// <summary>
-        /// Implicitly converts an <see ref="PhoneActions" /> to an <see ref="InputActionMap" /> instance.
+        /// Implicitly converts an <see ref="MainActions" /> to an <see ref="InputActionMap" /> instance.
         /// </summary>
-        public static implicit operator InputActionMap(PhoneActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(MainActions set) { return set.Get(); }
         /// <summary>
         /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
         /// </summary>
@@ -239,14 +276,17 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
         /// </remarks>
-        /// <seealso cref="PhoneActions" />
-        public void AddCallbacks(IPhoneActions instance)
+        /// <seealso cref="MainActions" />
+        public void AddCallbacks(IMainActions instance)
         {
-            if (instance == null || m_Wrapper.m_PhoneActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PhoneActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_MainActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MainActionsCallbackInterfaces.Add(instance);
             @Back.started += instance.OnBack;
             @Back.performed += instance.OnBack;
             @Back.canceled += instance.OnBack;
+            @Tap.started += instance.OnTap;
+            @Tap.performed += instance.OnTap;
+            @Tap.canceled += instance.OnTap;
         }
 
         /// <summary>
@@ -255,21 +295,24 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         /// <remarks>
         /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
         /// </remarks>
-        /// <seealso cref="PhoneActions" />
-        private void UnregisterCallbacks(IPhoneActions instance)
+        /// <seealso cref="MainActions" />
+        private void UnregisterCallbacks(IMainActions instance)
         {
             @Back.started -= instance.OnBack;
             @Back.performed -= instance.OnBack;
             @Back.canceled -= instance.OnBack;
+            @Tap.started -= instance.OnTap;
+            @Tap.performed -= instance.OnTap;
+            @Tap.canceled -= instance.OnTap;
         }
 
         /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="PhoneActions.UnregisterCallbacks(IPhoneActions)" />.
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="MainActions.UnregisterCallbacks(IMainActions)" />.
         /// </summary>
-        /// <seealso cref="PhoneActions.UnregisterCallbacks(IPhoneActions)" />
-        public void RemoveCallbacks(IPhoneActions instance)
+        /// <seealso cref="MainActions.UnregisterCallbacks(IMainActions)" />
+        public void RemoveCallbacks(IMainActions instance)
         {
-            if (m_Wrapper.m_PhoneActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_MainActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
@@ -279,27 +322,27 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
         /// </remarks>
-        /// <seealso cref="PhoneActions.AddCallbacks(IPhoneActions)" />
-        /// <seealso cref="PhoneActions.RemoveCallbacks(IPhoneActions)" />
-        /// <seealso cref="PhoneActions.UnregisterCallbacks(IPhoneActions)" />
-        public void SetCallbacks(IPhoneActions instance)
+        /// <seealso cref="MainActions.AddCallbacks(IMainActions)" />
+        /// <seealso cref="MainActions.RemoveCallbacks(IMainActions)" />
+        /// <seealso cref="MainActions.UnregisterCallbacks(IMainActions)" />
+        public void SetCallbacks(IMainActions instance)
         {
-            foreach (var item in m_Wrapper.m_PhoneActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_MainActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_PhoneActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_MainActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
     /// <summary>
-    /// Provides a new <see cref="PhoneActions" /> instance referencing this action map.
+    /// Provides a new <see cref="MainActions" /> instance referencing this action map.
     /// </summary>
-    public PhoneActions @phone => new PhoneActions(this);
+    public MainActions @Main => new MainActions(this);
     /// <summary>
-    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "phone" which allows adding and removing callbacks.
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Main" which allows adding and removing callbacks.
     /// </summary>
-    /// <seealso cref="PhoneActions.AddCallbacks(IPhoneActions)" />
-    /// <seealso cref="PhoneActions.RemoveCallbacks(IPhoneActions)" />
-    public interface IPhoneActions
+    /// <seealso cref="MainActions.AddCallbacks(IMainActions)" />
+    /// <seealso cref="MainActions.RemoveCallbacks(IMainActions)" />
+    public interface IMainActions
     {
         /// <summary>
         /// Method invoked when associated input action "Back" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
@@ -308,5 +351,12 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnBack(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Tap" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTap(InputAction.CallbackContext context);
     }
 }

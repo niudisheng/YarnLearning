@@ -6,7 +6,9 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Unity.TextMeshPro",
-        "YarnSpinner.Unity.Editor"
+        "YarnSpinner.Unity.Editor",
+        "UnityEditor.UI",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
