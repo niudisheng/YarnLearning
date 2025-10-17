@@ -36,17 +36,12 @@ public class CustomDialoguePresenter : DialoguePresenterBase
     [SerializeField] private float autoPlayDelay = 2.0f;      // 自动下一句延迟
     
     [Header("Typing Sound Settings")]
-
+    [SerializeField] private TypewriterSoundController typewriterSoundController;
     private float typingSoundTimer = 0f;
 
     private void PlayTypingSound() {
         if (typingClip == null || typingAudioSource == null) return;
-
-        typingSoundTimer -= Time.deltaTime;
-        if (typingSoundTimer <= 0f) {
-            typingAudioSource.PlayOneShot(typingClip, typingVolume);
-            typingSoundTimer = typingSoundInterval;
-        }
+        typewriterSoundController.OnLetterPrinted();
     }
     
     
