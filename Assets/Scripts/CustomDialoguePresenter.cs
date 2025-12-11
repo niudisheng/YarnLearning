@@ -21,8 +21,6 @@ public class CustomDialoguePresenter : DialoguePresenterBase
     [Header("Typewriter Effect Settings")]
     [SerializeField] private bool enableTypewriter = true;    // 是否启用打字机效果
     [SerializeField] private int lettersPerSecond = 60;       // 每秒多少字
-    [SerializeField] private AudioSource typingAudioSource; 
-    [SerializeField] private AudioClip typingClip; 
     [SerializeField] [Range(0f, 1f)] private float typingVolume = 0.5f;
     [SerializeField] private float typingSoundInterval = 0.05f; // 每隔多少秒播放一次音效
     
@@ -40,7 +38,6 @@ public class CustomDialoguePresenter : DialoguePresenterBase
     private float typingSoundTimer = 0f;
 
     private void PlayTypingSound() {
-        if (typingClip == null || typingAudioSource == null) return;
         typewriterSoundController.OnLetterPrinted();
     }
     
